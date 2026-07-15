@@ -1,0 +1,112 @@
+{
+  "name": "Daily SOC Report Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger-daily-8am",
+      "name": "Schedule Trigger (Daily 8 AM)",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://fastapi-backend:8000/api/v1/dashboard/summary",
+        "authentication": "none",
+        "options": {}
+      },
+      "id": "fetch-dashboard-summary",
+      "name": "Fetch Dashboard Summary",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://fastapi-backend:8000/api/v1/prioritize",
+        "authentication": "none",
+        "options": {}
+      },
+      "id": "trigger-prioritization",
+      "name": "Trigger AI Patch Prioritizer",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/REPLACE_WITH_YOUR_SLACK_WEBHOOK_URL",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"text\": \"📊 *Daily SOC Threat Briefing* 📊\\n\\n*Critical CVEs*: {{ $node[\\\"Fetch Dashboard Summary\\\"].json.critical_vulnerabilities }}\\n*New Exploits*: {{ $node[\\\"Fetch Dashboard Summary\\\"].json.cisa_kev_count }}\\n\\n*Recommended Actions Summary*:\\n{{ $json.report.slice(0, 300) }}...\\n\\nReview details inside the SOC Control Panel at http://localhost:8501.\"\n}",
+        "options": {}
+      },
+      "id": "post-daily-briefing-slack",
+      "name": "Post Daily Briefing to Slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        800,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (Daily 8 AM)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Dashboard Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Dashboard Summary": {
+      "main": [
+        [
+          {
+            "node": "Trigger AI Patch Prioritizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger AI Patch Prioritizer": {
+      "main": [
+        [
+          {
+            "node": "Post Daily Briefing to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

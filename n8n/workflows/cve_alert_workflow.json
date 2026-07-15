@@ -1,0 +1,151 @@
+{
+  "name": "SOC Auto Ingest & Alert Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 12
+            }
+          ]
+        }
+      },
+      "id": "8b51d11b-8524-4f05-89c2-7ba0e304b419",
+      "name": "Schedule Ingest (12h)",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://fastapi-backend:8000/api/v1/sync/cisa",
+        "authentication": "none",
+        "options": {}
+      },
+      "id": "e229c11c-2938-4f81-a902-6c841bb92bc8",
+      "name": "Trigger KEV Ingest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://fastapi-backend:8000/api/v1/sync/epss",
+        "authentication": "none",
+        "options": {}
+      },
+      "id": "c119e238-c619-48be-bc19-ef89e902123d",
+      "name": "Trigger EPSS Ingest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://fastapi-backend:8000/api/v1/vulnerabilities",
+        "authentication": "none",
+        "sendQuery": true,
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "severity",
+              "value": "CRITICAL"
+            },
+            {
+              "name": "limit",
+              "value": "10"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8a9a202-b2a1-4328-98e9-ab19230e7cc8",
+      "name": "Fetch Latest Critical Threats",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/REPLACE_WITH_YOUR_SLACK_WEBHOOK_URL",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"text\": \"⚠️ *CRITICAL THREAT INGEST ALERT* ⚠️\\nTotal loaded: {{ $json.length }} items.\\nLatest CVE: *{{ $json[0]?.cve_id }}* ({{ $json[0]?.title }})\\nCVSS Score: *{{ $json[0]?.cvss_score }}* | EPSS Score: *{{ ($json[0]?.epss_score * 100).toFixed(2) }}%*\\nAction: Immediate review required inside the SOC control panel.\"\n}",
+        "options": {}
+      },
+      "id": "a9e2193d-d421-49fa-91b3-ee128bc2110c",
+      "name": "Post Alert to Slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1000,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Ingest (12h)": {
+      "main": [
+        [
+          {
+            "node": "Trigger KEV Ingest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger KEV Ingest": {
+      "main": [
+        [
+          {
+            "node": "Trigger EPSS Ingest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger EPSS Ingest": {
+      "main": [
+        [
+          {
+            "node": "Fetch Latest Critical Threats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Latest Critical Threats": {
+      "main": [
+        [
+          {
+            "node": "Post Alert to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}
