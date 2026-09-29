@@ -122,3 +122,11 @@ Detailed diagrams and visual flows are available in the [Architecture Documentat
 
 ## 📄 License
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+
+
+## 🔐 Security & Configuration
+
+- Keep API keys, JWT secrets, and database credentials in environment variables; never commit production secrets.
+- Copy `.env.example` to `.env` for local configuration and replace all placeholder values before starting the stack.
+- Use unique high-entropy secrets for production deployments and rotate credentials if they are exposed.
+- Review tenant isolation, authentication, authorization, and AI-input validation before production use.
