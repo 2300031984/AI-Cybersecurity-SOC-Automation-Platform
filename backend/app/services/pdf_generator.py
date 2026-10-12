@@ -60,7 +60,7 @@ def compile_soc_daily_report(org_name: str, reports_data: List[Dict[str, Any]]) 
     for item in reports_data:
         v = item["vulnerability"]
         a = item["analysis"]
-        is_kev_str = "YES (Active in the Wild)" if item["is_kev"] else "NO"
+        is_kev_str = "YES (Catalog Listed in CISA KEV)" if item["is_kev"] else "NO"
         
         pdf.set_text_color(220, 53, 69) # Red color for CVE headers
         pdf.set_font("Helvetica", "B", 11)

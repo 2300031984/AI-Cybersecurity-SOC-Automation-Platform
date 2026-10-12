@@ -1,6 +1,6 @@
-# Portfolio & Presentation Assets (v2.0 - Phase 4)
+# Portfolio & Presentation Assets (ThreatScope v2.0)
 
-This document compiles career-enhancing portfolio assets, interview guides, and scripts relating to the upgraded AI Cybersecurity Threat Intelligence & SOC Automation Platform (v2.0).
+This document compiles career-enhancing portfolio assets, interview guides, and scripts relating to the ThreatScope — Cybersecurity Intelligence & Risk Operations Platform.
 
 ---
 
@@ -8,7 +8,7 @@ This document compiles career-enhancing portfolio assets, interview guides, and 
 
 *   **Senior Security Engineer / Backend & AI Integrations**:
     *   Designed and built a multi-tenant, production-ready AI Threat Intelligence & SOC Automation Platform integrating Python (FastAPI), PostgreSQL, and Google Gemini 2.5 Flash.
-    *   Implemented strict row-level tenant isolation in the FastAPI/SQLAlchemy database layer, ensuring users mapped to Microsoft, Amazon, Infosys, TCS, or Deloitte can only browse and search organization-specific exposures.
+    *   Implemented strict row-level tenant isolation in the FastAPI/SQLAlchemy database layer, ensuring analysts mapped to separate enterprise tenants can only browse and search organization-specific exposures.
     *   Created a modular, LangChain-based RAG Security Copilot utilizing `ConversationBufferMemory` to maintain conversation thread context and enable multi-turn dialogues on CVE exposures.
     *   Engineered a secure Natural-Language-to-SQL (NL2SQL) translation service utilizing regex command sanitizers that restrict AI-generated SQL query execution strictly to safe `SELECT` operations.
     *   Developed an automated AI Patch Prioritizer ranking organizational vulnerabilities on-the-fly based on CVSS score severity, CISA KEV exploit status, and EPSS score exploit likelihoods.
@@ -21,10 +21,10 @@ This document compiles career-enhancing portfolio assets, interview guides, and 
 ## 2. High-Impact LinkedIn Announcement Post
 
 ```text
-🚀 Exciting Project Share! I have just launched the Enterprise upgrade (v2.0) of my "AI Cybersecurity Threat Intelligence & SOC Automation Platform" — an enterprise-grade multi-tenant threat center.
+🚀 Exciting Project Share! I have just launched ThreatScope (v2.0) — an enterprise-grade Cybersecurity Intelligence & Risk Operations console.
 
 What's New in v2.0:
-🔹 Multi-Tenant Isolation: Complete row-level database segregation supporting separate organization contexts (Microsoft, Amazon, TCS, Deloitte).
+🔹 Multi-Tenant Isolation: Complete row-level database segregation supporting separate organization contexts with verified tenant boundaries.
 🔹 AI Security Copilot (RAG): Modular LangChain-based chat assistant that queries PostgreSQL tables, maintains conversation memory, and displays SQL debug queries.
 🔹 AI Patch Prioritization: Automatically ranks vulnerability lists from highest to lowest patch priority using CVSS, CISA KEV, and EPSS scores.
 🔹 AI Incident Response: Generates containment playbooks, Snort firewall rules, and Splunk threat detection queries for critical CVEs.

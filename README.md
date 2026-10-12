@@ -1,16 +1,16 @@
-# AI Cybersecurity Threat Intelligence & SOC Automation Platform (v2.0 - Phase 20)
+# ThreatScope — Cybersecurity Intelligence & Risk Operations
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
-[![Streamlit](https://img.shields.io/badge/Dashboard-Streamlit-FF4B4B?style=flat&logo=streamlit)](https://streamlit.io)
+[![Streamlit](https://img.shields.io/badge/Console-Streamlit-2DD4BF?style=flat&logo=streamlit)](https://streamlit.io)
 [![n8n](https://img.shields.io/badge/Automation-n8n-FF6C37?style=flat&logo=n8n)](https://n8n.io)
 [![Google Gemini](https://img.shields.io/badge/AI-Google_Gemini-4285F4?style=flat&logo=google)](https://ai.google.dev)
 [![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-336791?style=flat&logo=postgresql)](https://www.postgresql.org)
 [![Docker](https://img.shields.io/badge/Containers-Docker_Compose-2496ED?style=flat&logo=docker)](https://www.docker.com)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-An enterprise-grade AI-powered Security Operations Center (SOC) automation platform that combines threat intelligence, SOAR automation, vulnerability management, and AI-driven security analysis.
+**ThreatScope** is an enterprise-grade Cybersecurity Intelligence & Risk Operations platform that combines real-time threat intelligence feeds, SOAR automation, quantitative vulnerability prioritization, and AI-assisted security analysis in a modern Dark SOC console with horizontal navigation.
 
-The platform automatically collects vulnerabilities, enriches threat intelligence, calculates risk, generates security reports, and delivers real-time SOC alerts. Aggregating live threat data feeds (NVD CVE registry, CISA KEV catalog, EPSS likelihood indexes), it performs row-level tenant isolation and delivers AI-powered remediation playbooks and security chat features.
+The platform automatically ingests vulnerabilities, enriches threat intelligence, computes exploit probability, prioritizes remediation schedules, and generates defensive containment playbooks. Aggregating live threat telemetry feeds (NVD CVE registry, CISA KEV catalog, EPSS likelihood indexes), it enforces row-level tenant isolation and delivers grounded AI-powered security analysis.
 
 ---
 
@@ -51,11 +51,11 @@ Detailed diagrams and visual flows are available in the [Architecture Documentat
 ## 🚀 Key Features
 
 ### Threat Intelligence & SOAR
-* **Multi-Tenant Isolation**: Implements tenant-aware data segregation using application-level query controls and database isolation mechanisms.
-* **Vulnerability Data Normalization**: Normalized PostgreSQL schemas for vulnerabilities, products, vendors, CISA KEV details, and EPSS scores.
-* **IOC Enrichment Feeds**: Interfaces with VirusTotal, AbuseIPDB, URLhaus, and AlienVault OTX for reputation lookups, with fallback handling when keys are unavailable.
-* **NVD Resolvers**: Dynamically fetches and saves CVE profiles from the official NVD API.
-* **MITRE ATT&CK Mapping**: Maps vulnerability exposure context to adversarial techniques.
+* **Multi-Tenant Isolation**: Implements strict row-level database segregation using SQLAlchemy query filters. Users logged into separate tenant organizations can only access organization-specific vulnerability lists.
+* **Vulnerability Data Normalization**: Fully normalized PostgreSQL schemas mapping vulnerabilities, products, vendors, CISA KEV details, and EPSS scores to organization assets.
+* **IOC Enrichment Feeds**: Interfaces with VirusTotal, AbuseIPDB, URLhaus, and AlienVault OTX to perform reputation lookups on IPs, hashes, domains, and URLs (with automatic mock fallbacks if keys are absent).
+* **Real-Time NVD Resolvers**: Dynamically fetches and saves unindexed CVE profiles from the official NVD API.
+* **MITRE ATT&CK Mapping**: Maps vulnerability exposures to known adversarial techniques.
 
 ### AI & Security Copilot
 * **AI Security Copilot (LangChain RAG)**: Conversational security assistance with retrieval-augmented context.
